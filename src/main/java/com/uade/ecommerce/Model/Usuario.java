@@ -2,6 +2,7 @@ package com.uade.ecommerce.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,16 @@ public class Usuario {
 
     private String nombre;
     private String email;
-
+    private LocalDate fechaNacimiento;
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
+    
+    // Relacion OneToMany: un usuario puede tener muchas peliculas.
     @OneToMany
     @JoinColumn(name = "usuario_id")
     private List<Pelicula> peliculas = new ArrayList<>();
 
+    // Relacion ManyToMany: muchos usuarios pueden tener muchas peliculas favoritas.
     @ManyToMany
     @JoinTable(
             name = "usuarios_peliculas_favoritas",

@@ -4,6 +4,8 @@ import com.uade.ecommerce.Model.Usuario;
 import com.uade.ecommerce.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -21,13 +23,17 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public Usuario buscarPorId(@PathVariable Long id) {
-        return usuarioService.obtenerPorId(id).orElse(null);
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+       Usuario usuario = usuarioService.obtenerPorId(id);
+        return ResponseEntity.ok(usuario);
     }
 
     @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
-        return usuarioService.guardar(usuario);
+    public ResponseEntity <Usuario> crear(@RequestBody Usuario usuario) {
+        Usuario nuevoUsuario = usuarioService.guardar(usuario);
+        return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(nuevoUsuario);
     }
 
     @PutMapping("/{id}")

@@ -26,6 +26,15 @@ public class PeliculaService {
         return peliculaRepository.save(pelicula);
     }
 
+    public Optional<Pelicula> actualizar(Long id, Pelicula datosActualizados) {
+        return peliculaRepository.findById(id).map(pelicula -> {
+            pelicula.setTitulo(datosActualizados.getTitulo());
+            pelicula.setGenero(datosActualizados.getGenero());
+            pelicula.setDuracion(datosActualizados.getDuracion());
+            return peliculaRepository.save(pelicula);
+        });
+    }
+
     public void eliminar(Long id) {
         peliculaRepository.deleteById(id);
     }
