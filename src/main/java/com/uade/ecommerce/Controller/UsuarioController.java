@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.uade.ecommerce.Dto.UsuarioRequestDTO;
+import com.uade.ecommerce.Dto.UsuarioResponseDTO;
 
 import java.util.List;
 
@@ -23,14 +25,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
-       Usuario usuario = usuarioService.obtenerPorId(id);
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id) {
+       UsuarioResponseDTO usuario = usuarioService.obtenerPorId(id);
         return ResponseEntity.ok(usuario);
     }
 
     @PostMapping
-    public ResponseEntity <Usuario> crear(@RequestBody Usuario usuario) {
-        Usuario nuevoUsuario = usuarioService.guardar(usuario);
+    public ResponseEntity <UsuarioResponseDTO> crear(@RequestBody UsuarioRequestDTO usuarioDTO) {
+        UsuarioResponseDTO nuevoUsuario = usuarioService.guardar(usuarioDTO);
         return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(nuevoUsuario);

@@ -1,12 +1,14 @@
 package com.uade.ecommerce.Service;
 
+import com.uade.ecommerce.Dto.UsuarioRequestDTO;
+import com.uade.ecommerce.Dto.UsuarioResponseDTO;
+import com.uade.ecommerce.Exception.ArgumentInvalidException;
+import com.uade.ecommerce.Exception.ResourceNotFoundException;
 import com.uade.ecommerce.Model.Usuario;
 import com.uade.ecommerce.Repository.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.uade.ecommerce.Exception.ResourceNotFoundException;
-import com.uade.ecommerce.Exception.ArgumentInvalidException;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -21,35 +23,69 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario obtenerPorId(Long id) {
-        return usuarioRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+    public UsuarioResponseDTO obtenerPorId(Long id) {
+
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Usuario no encontrado con id: " + id
+                        )
+                );
+
+        return convertirAResponseDTO(usuario);
     }
 
-    public Usuario guardar(Usuario usuario) {
-        if (usuario.getNombre() == null || usuario.getNombre().isBlank()) {
-            throw new ArgumentInvalidException("El nombre del usuario no puede estar vacío");
+    public UsuarioResponseDTO guardar(UsuarioRequestDTO usuarioDTO) {
+
+        if (usuarioDTO.getNombre() == null || usuarioDTO.getNombre().isBlank()) {
+            throw new ArgumentInvalidException(
+                    "El nombre del usuario no puede estar vacío"
+            );
         }
-        if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
-            throw new ArgumentInvalidException("El email del usuario no puede estar vacío");
+
+        if (usuarioDTO.getEmail() == null || usuarioDTO.getEmail().isBlank()) {
+            throw new ArgumentInvalidException(
+                    "El email del usuario no puede estar vacío"
+            );
         }
-        return usuarioRepository.save(usuario);
+
+        Usuario usuario = new Usuario();
+
+        usuario.setNombre(usuarioDTO.getNombre());
+        usuario.setEmail(usuarioDTO.getEmail());
+        usuario.setFechaNacimiento(usuarioDTO.getFechaNacimiento());
+        usuario.setSexo(usuarioDTO.getSexo());
+
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
+
+        return convertirAResponseDTO(usuarioGuardado);
     }
 
-    public Optional<Usuario> actualizar(Long id, Usuario datosActualizados) {
+    private UsuarioResponseDTO convertirAResponseDTO(Usuario usuario) {
+
+        return new UsuarioResponseDTO(
+                usuario.getId(),
+                usuario.getNombre(),
+                usuario.getEmail(),
+                usuario.getFechaNacimiento(),
+                usuario.getSexo()
+        );
+    }
+
+    public Optional<UsuarioResponseDTO> actualizar(
+            Long id,
+            UsuarioRequestDTO datosActualizados) {
+
         return usuarioRepository.findById(id).map(usuario -> {
+
             usuario.setNombre(datosActualizados.getNombre());
             usuario.setEmail(datosActualizados.getEmail());
+            usuario.setFechaNacimiento(datosActualizados.getFechaNacimiento());
+            usuario.setSexo(datosActualizados.getSexo());
 
-            if (datosActualizados.getPeliculas() != null) {
-                usuario.setPeliculas(datosActualizados.getPeliculas());
-            }
+            Usuario usuarioActualizado = usuarioRepository.save(usuario);
 
-            if (datosActualizados.getPeliculasFavoritas() != null) {
-                usuario.setPeliculasFavoritas(datosActualizados.getPeliculasFavoritas());
-            }
-
-            return usuarioRepository.save(usuario);
+            return convertirAResponseDTO(usuarioActualizado);
         });
     }
 
