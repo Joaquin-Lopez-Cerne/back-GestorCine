@@ -30,6 +30,11 @@ public class PeliculaController {
         return peliculaService.guardar(pelicula);
     }
 
+    @PutMapping("/{id}")
+    public Pelicula actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
+        return peliculaService.actualizar(id, pelicula).orElse(null);
+    }
+
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         peliculaService.eliminar(id);
