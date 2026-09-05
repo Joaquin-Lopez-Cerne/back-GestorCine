@@ -1,0 +1,15 @@
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Controller\PeliculaController.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Controller\UsuarioController.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Dto\UsuarioRequestDTO.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Dto\UsuarioResponseDTO.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\ECommerceApplication.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Exception\ArgumentInvalidException.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Exception\GlobalExceptionHandler.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Exception\ResourceNotFoundException.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Model\Pelicula.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Model\Sexo.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Model\Usuario.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Repository\PeliculaRepository.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Repository\UsuarioRepository.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Service\PeliculaService.java
+C:\Users\nicol\OneDrive\Desktop\back-GestorCine\src\main\java\com\uade\ecommerce\Service\UsuarioService.java

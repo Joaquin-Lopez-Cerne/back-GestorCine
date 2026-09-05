@@ -1,0 +1,15 @@
+com\uade\ecommerce\Exception\GlobalExceptionHandler.class
+com\uade\ecommerce\Service\PeliculaService.class
+com\uade\ecommerce\Service\UsuarioService.class
+com\uade\ecommerce\Model\Usuario.class
+com\uade\ecommerce\Exception\ResourceNotFoundException.class
+com\uade\ecommerce\Model\Pelicula.class
+com\uade\ecommerce\Model\Sexo.class
+com\uade\ecommerce\ECommerceApplication.class
+com\uade\ecommerce\Repository\UsuarioRepository.class
+com\uade\ecommerce\Controller\UsuarioController.class
+com\uade\ecommerce\Repository\PeliculaRepository.class
+com\uade\ecommerce\Exception\ArgumentInvalidException.class
+com\uade\ecommerce\Controller\PeliculaController.class
+com\uade\ecommerce\Dto\UsuarioRequestDTO.class
+com\uade\ecommerce\Dto\UsuarioResponseDTO.class

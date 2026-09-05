@@ -1,4 +1,4 @@
-package com.uade.ecommerce.DTO;
+package com.uade.ecommerce.Dto;
 
 import com.uade.ecommerce.Model.Sexo;
 import lombok.Getter;
