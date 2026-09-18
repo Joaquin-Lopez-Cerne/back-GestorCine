@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class UsuarioRequestDTO {
     private String nombre;
     private String email;
+    private String password;
     private LocalDate fechaNacimiento;
     private Sexo sexo;
 }

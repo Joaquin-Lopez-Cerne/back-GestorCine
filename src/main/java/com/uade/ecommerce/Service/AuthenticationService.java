@@ -6,68 +6,74 @@ import com.uade.ecommerce.Exception.ArgumentInvalidException;
 import com.uade.ecommerce.Model.Role;
 import com.uade.ecommerce.Model.Usuario;
 import com.uade.ecommerce.Repository.UsuarioRepository;
+import com.uade.ecommerce.Security.JwtUtil;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- * Concentra el registro y el inicio de sesión de los usuarios del cine.
- * La contraseña se persiste cifrada y nunca forma parte de los DTO de respuesta.
- */
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AuthenticationService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     public String register(RegisterRequest request) {
         if (request == null) {
             throw new ArgumentInvalidException("Los datos de registro son obligatorios");
         }
         if (request.getNombre() == null || request.getNombre().isBlank()) {
-            throw new ArgumentInvalidException("El nombre del usuario no puede estar vacío");
+            throw new ArgumentInvalidException("El nombre del usuario no puede estar vacio");
         }
         if (request.getEmail() == null || request.getEmail().isBlank()) {
-            throw new ArgumentInvalidException("El email del usuario no puede estar vacío");
+            throw new ArgumentInvalidException("El email del usuario no puede estar vacio");
         }
         if (request.getPassword() == null || request.getPassword().isBlank()) {
-            throw new ArgumentInvalidException("La contraseña no puede estar vacía");
+            throw new ArgumentInvalidException("La contrasena no puede estar vacia");
         }
         if (usuarioRepository.existsByEmail(request.getEmail())) {
             throw new ArgumentInvalidException("Ya existe un usuario con ese email");
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setNombre(request.getNombre());
-        usuario.setEmail(request.getEmail());
-        usuario.setFechaNacimiento(request.getFechaNacimiento());
-        usuario.setSexo(request.getSexo());
-        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        // El alta pública nunca permite que el cliente se autoasigne ADMIN.
-        usuario.setRole(Role.USER);
-        usuarioRepository.save(usuario);
+        Usuario usuario = Usuario.builder()
+                .nombre(request.getNombre())
+                .email(request.getEmail())
+                .fechaNacimiento(request.getFechaNacimiento())
+                .sexo(request.getSexo())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
 
+        usuarioRepository.save(usuario);
         return "Usuario registrado correctamente";
     }
 
-    public Authentication authenticate(LoginRequest request) {
+    public String authenticate(LoginRequest request) {
         if (request == null || request.getEmail() == null || request.getPassword() == null) {
-            throw new ArgumentInvalidException("Email y contraseña son obligatorios");
+            throw new ArgumentInvalidException("Email y contrasena son obligatorios");
         }
 
-        return authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(), request.getPassword()));
+                        request.getEmail(),
+                        request.getPassword()));
+
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ArgumentInvalidException("Usuario no encontrado"));
+
+        Set<String> roles = usuario.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toSet());
+
+        return jwtUtil.generateToken(usuario.getEmail(), roles);
     }
 }

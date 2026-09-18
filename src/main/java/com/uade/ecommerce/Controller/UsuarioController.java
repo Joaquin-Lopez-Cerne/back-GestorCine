@@ -1,6 +1,5 @@
 package com.uade.ecommerce.Controller;
 
-import com.uade.ecommerce.Model.Usuario;
 import com.uade.ecommerce.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +19,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<Usuario> listar() {
-        return usuarioService.obtenerTodos();
+    public ResponseEntity<List<UsuarioResponseDTO>> listar() {
+        return ResponseEntity.ok(usuarioService.obtenerTodos());
     }
 
     @GetMapping("/{id}")
