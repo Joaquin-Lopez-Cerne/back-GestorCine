@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8
+    container_name: gestorcine-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ecommerce_db3
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

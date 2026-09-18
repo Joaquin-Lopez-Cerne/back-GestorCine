@@ -1,11 +1,8 @@
 package com.uade.ecommerce.Controller;
 
-import com.uade.ecommerce.Dto.PeliculaDTO;
-import com.uade.ecommerce.Dto.PeliculaUpdateDTO;
+import com.uade.ecommerce.Model.Pelicula;
 import com.uade.ecommerce.Service.PeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,34 +16,27 @@ public class PeliculaController {
     private PeliculaService peliculaService;
 
     @GetMapping
-    public ResponseEntity<List<PeliculaDTO>> listar() {
-        return ResponseEntity.ok(peliculaService.obtenerTodas());
+    public List<Pelicula> listar() {
+        return peliculaService.obtenerTodas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PeliculaDTO> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(peliculaService.obtenerPorId(id));
+    public Pelicula buscarPorId(@PathVariable Long id) {
+        return peliculaService.obtenerPorId(id).orElse(null);
     }
 
     @PostMapping
-    public ResponseEntity<PeliculaDTO> crear(@RequestBody PeliculaDTO peliculaDTO) {
-        PeliculaDTO peliculaGuardada = peliculaService.guardar(peliculaDTO);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(peliculaGuardada);
+    public Pelicula crear(@RequestBody Pelicula pelicula) {
+        return peliculaService.guardar(pelicula);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PeliculaDTO> actualizar(
-            @PathVariable Long id,
-            @RequestBody PeliculaUpdateDTO peliculaDTO) {
-
-        return ResponseEntity.ok(peliculaService.actualizar(id, peliculaDTO));
+    public Pelicula actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
+        return peliculaService.actualizar(id, pelicula).orElse(null);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public void eliminar(@PathVariable Long id) {
         peliculaService.eliminar(id);
-        return ResponseEntity.noContent().build();
     }
 }

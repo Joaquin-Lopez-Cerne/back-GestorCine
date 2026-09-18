@@ -6,7 +6,6 @@ import com.uade.ecommerce.Exception.ArgumentInvalidException;
 import com.uade.ecommerce.Exception.ResourceNotFoundException;
 import com.uade.ecommerce.Model.Usuario;
 import com.uade.ecommerce.Repository.UsuarioRepository;
-import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,17 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<UsuarioResponseDTO> obtenerTodos() {
-        return usuarioRepository.findAll()
-                .stream()
-                .map(this::convertirAResponseDTO)
-                .toList();
+    public List<Usuario> obtenerTodos() {
+        return usuarioRepository.findAll();
     }
 
     public UsuarioResponseDTO obtenerPorId(Long id) {
