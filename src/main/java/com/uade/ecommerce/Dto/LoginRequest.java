@@ -1,15 +1,15 @@
 package com.uade.ecommerce.Dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PeliculaDTO {
-    private Long id;
-    private String titulo;
-    private String genero;
-    private Integer duracion;
+public class LoginRequest {
+    private String email;
+    private String password;
 }
